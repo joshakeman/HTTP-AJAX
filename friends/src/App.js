@@ -35,7 +35,9 @@ class App extends Component {
     })
   }
 
-  createFriend = ()=> {
+  createFriend = (e)=> {
+    e.preventDefault();
+
     const newFriend = {
       name: this.state.name,
       age: this.state.age,
@@ -44,7 +46,10 @@ class App extends Component {
 
     axios.post('http://localhost:5000/friends', newFriend)
     .then(res => {
-      this.setState({ friends: [...this.state.friends, newFriend]
+      this.setState({ friends: [...this.state.friends, newFriend],
+        name: '',
+        age: '',
+        email: ''
       });
       console.log(res)
     })
