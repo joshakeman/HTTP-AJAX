@@ -6,6 +6,7 @@ import { Route, Link, NavLink } from 'react-router-dom'
 import Form from './components/Form'
 import FriendList from './components/FriendList'
 import NavBar from './components/NavBar'
+import Friend from './components/Friend'
 
 
 class App extends Component {
@@ -78,11 +79,17 @@ class App extends Component {
           handleChanges={this.handleChanges}
           />
         }/>
-          <Route path="/" render={props => 
+          <Route exact path="/" render={props => 
           <FriendList 
           friends={this.state.friends}
           />
           }/>
+
+          <Route path="/:friendId" render={props => 
+          <Friend 
+          {...props}
+          friends={this.state.friends}
+          />}/>
       </div>
     );
   }
