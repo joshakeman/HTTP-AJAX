@@ -39,7 +39,8 @@ class App extends Component {
     this.setState({
       name: friend.name,
       age: friend.age,
-      email: friend.email
+      email: friend.email,
+      editingId: friend.id
     })
     this.props.history.push(`/${friend.id}`)
   }
@@ -79,6 +80,39 @@ class App extends Component {
 updateFriend = (e)=> {
   e.preventDefault();
 
+  axios.put(`http://localhost:5000/friends/${this.state.editingId}`, {name: this.state.name, age: this.state.age, email:this.state.email})
+    .then(res => {
+      this.setState({ friends: res.data,
+        name: '',
+        age: '',
+        email: ''
+      });
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
+    this.props.history.push("/")
+
+}
+
+destroyFriend = (e, id) => {
+  e.preventDefault()
+
+  axios
+      .delete(`http://localhost:5000/friends/${id}`)
+      .then(res => {
+        console.log('Data is back, now set state and reroute', res.data);
+        this.setState({
+          friends: res.data
+        });
+        this.props.history.push('/');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
 }
 
 
@@ -108,7 +142,7 @@ updateFriend = (e)=> {
           <Friend 
           {...props}
           friends={this.state.friends}
-        
+          destroyFriend={this.destroyFriend}
           />}/>
 
           <Route path="/:friendId/update" render={props =>

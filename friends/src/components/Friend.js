@@ -12,7 +12,7 @@ const Friend = props => {
                 <p>{friend.age}</p>
                 <p>{friend.email}</p>
                 <Link to={`/${friend.id}/update`}><button className="other-btn grn">Update Friend</button></Link>
-                <button className="other-btn red">Destroy Friend</button>
+                <button onClick={e=>props.destroyFriend(e, friend.id)} className="other-btn red">Destroy Friend</button>
             </div>
             
         </div>
