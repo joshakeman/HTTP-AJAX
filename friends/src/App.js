@@ -54,6 +54,9 @@ class App extends Component {
     .catch(err => {
       console.log(err)
     })
+
+    this.props.history.push("/")
+
   }
 
   handleChanges = (event) => {
@@ -64,7 +67,7 @@ class App extends Component {
 
 
   render() {
-    console.log(this.state)
+    console.log(this.props)
     return (
       <div className="App">
           <NavBar />
@@ -72,6 +75,7 @@ class App extends Component {
           <Form 
           {...props}
           createFriend={this.createFriend}
+          handleChanges={this.handleChanges}
           />
         }/>
           <Route path="/" render={props => 
