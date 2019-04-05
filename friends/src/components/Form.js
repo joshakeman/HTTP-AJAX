@@ -1,16 +1,21 @@
 import React from 'react'
+import '../App.css'
 
 const Form = props => {
 
+// const closeForm = e => {
+//     e.preventDefault()
+//     props.history.push("/")
+// }
 
     return (
         <div className="form">
             <form onSubmit={props.createFriend}>
-            <input placeholder="name..." name="name" onChange={props.handleChanges}></input>
-            <input placeholder="age..." name="age" onChange={props.handleChanges}></input>
-            <input placeholder="email..." name="email" onChange={props.handleChanges}></input>
+            <input required placeholder="name..." name="name" onChange={props.handleChanges}></input>
+            <input required placeholder="age..." name="age" onChange={props.handleChanges}></input>
+            <input required placeholder="email..." name="email" onChange={props.handleChanges}></input>
+            <button type="submit" className="btn">Add New Friend</button>
             </form>
-            <button onClick={props.createFriend} >Add New Friend</button>
         </div>
     )
 

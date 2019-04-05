@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
+import { Route, Link, NavLink } from 'react-router-dom'
 
 import Form from './components/Form'
+import FriendList from './components/FriendList'
+import NavBar from './components/NavBar'
+import Friend from './components/Friend'
+import UpdateForm from './components/UpdateForm'
 
-const Friend = props => {
-  return (
-  <div>{props.friends.name} {props.friends.age} {props.friends.email}</div>
-  )
-}
 
 class App extends Component {
   constructor() {
@@ -35,7 +35,19 @@ class App extends Component {
     })
   }
 
-  createFriend = ()=> {
+  currentFriend = friend => {
+    this.setState({
+      name: friend.name,
+      age: friend.age,
+      email: friend.email,
+      editingId: friend.id
+    })
+    this.props.history.push(`/${friend.id}`)
+  }
+
+  createFriend = (e)=> {
+    e.preventDefault();
+
     const newFriend = {
       name: this.state.name,
       age: this.state.age,
@@ -44,17 +56,18 @@ class App extends Component {
 
     axios.post('http://localhost:5000/friends', newFriend)
     .then(res => {
-      this.setState({ friends: [...this.state.friends, newFriend]
+      this.setState({ friends: [...this.state.friends, newFriend],
+        name: '',
+        age: '',
+        email: ''
       });
       console.log(res)
     })
     .catch(err => {
       console.log(err)
     })
-  
-    // this.setState ({
-    //   friends: [...this.state.friends, newFriend]
-    // })
+
+    this.props.history.push("/")
 
   }
 
@@ -64,23 +77,82 @@ class App extends Component {
     })
 }
 
+updateFriend = (e)=> {
+  e.preventDefault();
+
+  axios.put(`http://localhost:5000/friends/${this.state.editingId}`, {name: this.state.name, age: this.state.age, email:this.state.email})
+    .then(res => {
+      this.setState({ friends: res.data,
+        name: '',
+        age: '',
+        email: ''
+      });
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
+    this.props.history.push("/")
+
+}
+
+destroyFriend = (e, id) => {
+  e.preventDefault()
+
+  axios
+      .delete(`http://localhost:5000/friends/${id}`)
+      .then(res => {
+        console.log('Data is back, now set state and reroute', res.data);
+        this.setState({
+          friends: res.data
+        });
+        this.props.history.push('/');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+}
+
 
   render() {
-    console.log(this.state)
+    console.log(this.props)
     return (
       <div className="App">
-      {/* <form onSubmit={this.createFriend}>
-        <input placeholder="name..." title="name" onChange={this.handleChanges}></input>
-        <input placeholder="age..." title="age" onChange={this.handleChanges}></input>
-        <input placeholder="email..." title="email" onChange={this.handleChanges}></input>
-      </form>
-      <button>Add New Friend</button> */}
-      <Form  handleChanges={this.handleChanges} createFriend={this.createFriend}/>
-      <div>
-        {this.state.friends.map((friend, id) => 
-            <Friend key={friend.id} friends={friend}/>
-        )}
-      </div>
+          <NavBar />
+          <Route path="/add-friend" render={props => 
+          <Form 
+          {...props}
+          createFriend={this.createFriend}
+          handleChanges={this.handleChanges}
+          />
+        }/>
+    
+
+          <Route exact path="/" render={props => 
+          <FriendList 
+          friends={this.state.friends}
+          currentFriend={this.currentFriend}
+          />
+          }/>
+
+
+          <Route path="/:friendId" render={props => 
+          <Friend 
+          {...props}
+          friends={this.state.friends}
+          destroyFriend={this.destroyFriend}
+          />}/>
+
+          <Route path="/:friendId/update" render={props =>
+            <UpdateForm
+            {...props}
+            handleChanges={this.handleChanges}
+            updateFriend={this.updateFriend}
+            {...this.state} />
+          }/>
+
       </div>
     );
   }
