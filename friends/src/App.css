@@ -3,6 +3,11 @@
   flex-wrap: wrap;
 }
 
+.friend-card-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .friend-card {
   width: 31%;
   text-align: center;
@@ -29,6 +34,22 @@ span {
   border: 1px solid white;
   color: white;
   cursor: pointer;
+}
+
+.other-btn {
+  padding: 5px 10px;
+  margin: 5px;
+  background: black;
+  border: 1px solid black;
+  color: white;
+  cursor: pointer;
+}
+
+.other-btn:hover {
+  background: white;
+  color: black;
+  border: 1px solid black;
+
 }
 
 .btn:hover {
@@ -60,3 +81,4 @@ span {
 ::placeholder {
   color: white;
 }
+
