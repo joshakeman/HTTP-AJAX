@@ -1,5 +1,6 @@
 import React from 'react'
 import '../App.css'
+import { Link } from 'react-router-dom'
 
 const Friend = props => {
     const friend = props.friends.find(friend => `${friend.id}` === props.match.params.friendId)
@@ -10,7 +11,7 @@ const Friend = props => {
                 <h1>{friend.name} </h1>
                 <p>{friend.age}</p>
                 <p>{friend.email}</p>
-                <button className="other-btn grn">Update Friend</button>
+                <Link to={`/${friend.id}/update`}><button className="other-btn grn">Update Friend</button></Link>
                 <button className="other-btn red">Destroy Friend</button>
             </div>
             

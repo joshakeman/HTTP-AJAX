@@ -7,6 +7,7 @@ import Form from './components/Form'
 import FriendList from './components/FriendList'
 import NavBar from './components/NavBar'
 import Friend from './components/Friend'
+import UpdateForm from './components/UpdateForm'
 
 
 class App extends Component {
@@ -32,6 +33,15 @@ class App extends Component {
     .catch(err => {
       console.log(err)
     })
+  }
+
+  currentFriend = friend => {
+    this.setState({
+      name: friend.name,
+      age: friend.age,
+      email: friend.email
+    })
+    this.props.history.push(`/${friend.id}`)
   }
 
   createFriend = (e)=> {
@@ -66,6 +76,11 @@ class App extends Component {
     })
 }
 
+updateFriend = (e)=> {
+  e.preventDefault();
+
+}
+
 
   render() {
     console.log(this.props)
@@ -79,17 +94,31 @@ class App extends Component {
           handleChanges={this.handleChanges}
           />
         }/>
+    
+
           <Route exact path="/" render={props => 
           <FriendList 
           friends={this.state.friends}
+          currentFriend={this.currentFriend}
           />
           }/>
+
 
           <Route path="/:friendId" render={props => 
           <Friend 
           {...props}
           friends={this.state.friends}
+        
           />}/>
+
+          <Route path="/:friendId/update" render={props =>
+            <UpdateForm
+            {...props}
+            handleChanges={this.handleChanges}
+            updateFriend={this.updateFriend}
+            {...this.state} />
+          }/>
+
       </div>
     );
   }
