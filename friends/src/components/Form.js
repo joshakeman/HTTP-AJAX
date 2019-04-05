@@ -1,7 +1,12 @@
 import React from 'react'
+import '../App.css'
 
 const Form = props => {
 
+const closeForm = e => {
+    e.preventDefault()
+    props.history.push("/")
+}
 
     return (
         <div className="form">
@@ -9,7 +14,7 @@ const Form = props => {
             <input required placeholder="name..." name="name" onChange={props.handleChanges}></input>
             <input required placeholder="age..." name="age" onChange={props.handleChanges}></input>
             <input required placeholder="email..." name="email" onChange={props.handleChanges}></input>
-            <button type="submit" >Add New Friend</button>
+            <button onClick={closeForm} type="submit" class="btn">Add New Friend</button>
             </form>
         </div>
     )

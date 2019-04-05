@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
+import { Route, Link, NavLink } from 'react-router-dom'
 
 import Form from './components/Form'
+import FriendList from './components/FriendList'
+import NavBar from './components/NavBar'
 
-const Friend = props => {
-  return (
-  <div>{props.friends.name} {props.friends.age} {props.friends.email}</div>
-  )
-}
 
 class App extends Component {
   constructor() {
@@ -56,11 +54,6 @@ class App extends Component {
     .catch(err => {
       console.log(err)
     })
-  
-    // this.setState ({
-    //   friends: [...this.state.friends, newFriend]
-    // })
-
   }
 
   handleChanges = (event) => {
@@ -74,18 +67,18 @@ class App extends Component {
     console.log(this.state)
     return (
       <div className="App">
-      {/* <form onSubmit={this.createFriend}>
-        <input placeholder="name..." title="name" onChange={this.handleChanges}></input>
-        <input placeholder="age..." title="age" onChange={this.handleChanges}></input>
-        <input placeholder="email..." title="email" onChange={this.handleChanges}></input>
-      </form>
-      <button>Add New Friend</button> */}
-      <Form  handleChanges={this.handleChanges} createFriend={this.createFriend}/>
-      <div>
-        {this.state.friends.map((friend, id) => 
-            <Friend key={friend.id} friends={friend}/>
-        )}
-      </div>
+          <NavBar />
+          <Route path="/add-friend" render={props => 
+          <Form 
+          {...props}
+          createFriend={this.createFriend}
+          />
+        }/>
+          <Route path="/" render={props => 
+          <FriendList 
+          friends={this.state.friends}
+          />
+          }/>
       </div>
     );
   }
